@@ -4,6 +4,7 @@ from machine import Pin
 from utime import ticks_ms, sleep_ms, sleep
 from WalklineUtility.tcpclient import *
 from Walkline import WalklineConfig
+import gc
 
 
 class Protocol(object):
@@ -40,7 +41,18 @@ class WalklineMPY(object):
 			sleep(2)
 
 	def check_data(self):
-		Protocol.client.request(DeviceCommand.QUERY_COMMAND, self._collect_status())
+		Protocol.client.request(DeviceCommand.QUERY_COMMAND, ujson.dumps(self._collect_status()))
+		print(Protocol.client.text())
+
+		# try:
+		json = Protocol.client.json()
+
+		if json['wanted_status'] != -1:
+			Protocol.switches[Protocol.device_id].set_status(json['wanted_status'])
+		# except Exception:
+		# 	pass
+
+		gc.collect()
 
 	@staticmethod
 	def _collect_status():
@@ -49,8 +61,8 @@ class WalklineMPY(object):
 		result += '"uuid":"{0}", "device_id":"{1}", "device_key":"{2}", '\
 			.format(Protocol.uuid, Protocol.device_id, Protocol.device_key)
 
-		for switch in Protocol.switches:
-			result += '"type":"switch","status":"{0:d}",'.format(switch.status())
+		for index, switch in Protocol.switches.items():
+			result += '"type":"switch","status":{0:d},'.format(switch.status())
 
 		return eval(result + '}')
 
@@ -87,10 +99,13 @@ class WalklineButton(object):
 
 class WalklineSwitch(object):
 	def __init__(self, pin: int, callback: callable):
-		self._switch = Pin(pin, Pin.IN)
+		self._switch = Pin(pin, Pin.OUT)
 		self._callback = callback
 
 		Protocol.switches[Protocol.device_id] = self
 
 	def status(self):
 		return self._switch.value()
+
+	def set_status(self, status):
+		self._callback(status)
