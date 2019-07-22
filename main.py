@@ -1,10 +1,10 @@
-from Walkline import Walkline, WalklineButton
+from Walkline import Walkline, WalklineButton, WalklineSwitch
 from WalklineUtility import WifiHandler
 from utime import sleep
-from .config import *
+from config import *
 from machine import Pin
 
-led = Pin(2, Pin.OUT, value=1)
+led = Pin(2, Pin.OUT, value=0)
 
 
 def main():
@@ -38,7 +38,8 @@ def button_pressed(status=None):
 
 if __name__ == "__main__":
 	try:
-		button = WalklineButton(5, button_pressed)
+		button = WalklineButton(13, button_pressed)
+		switch = WalklineSwitch(13, button_pressed)
 
 		if WifiHandler.STATION_CONNECTED == connect_to_internet():
 			while True:

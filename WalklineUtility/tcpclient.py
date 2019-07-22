@@ -11,6 +11,9 @@ class TCPClient(object):
 		url = "http://{0}:{1}/{2}".format(WALKLINE_HTTP_SERVER, WALKLINE_HTTP_PORT, command)
 		header = {'Content-Type': 'application/json'}
 
+		print("url:", url)
+		print("data:", ujson.dumps(data))
+
 		self._response = urequests.post(url, headers=header, data=ujson.dumps(data))
 
 	def status_code(self):
