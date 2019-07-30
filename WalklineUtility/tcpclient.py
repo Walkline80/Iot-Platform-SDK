@@ -12,7 +12,7 @@ class TCPClient(object):
 		self._json = None
 
 	def request(self, command: str, data: str):
-		url = "http://{0}:{1}/{2}".format(WALKLINE_HTTP_SERVER, WALKLINE_HTTP_PORT, command)
+		url = "{0}/{1}".format(WALKLINE_HTTP_SERVER, command)
 		header = {'Content-Type': 'application/json'}
 		# header = {"Content-Type": "application/x-www-form-urlencoded"}
 
@@ -24,12 +24,15 @@ class TCPClient(object):
 
 		self._response.close()
 
+	@property
 	def status_code(self):
 		return self._status_code
 
+	@property
 	def reason(self):
 		return self._reason
 
+	@property
 	def text(self):
 		return self._text
 

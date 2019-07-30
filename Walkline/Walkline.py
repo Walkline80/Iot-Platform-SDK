@@ -42,7 +42,7 @@ class WalklineMPY(object):
 
 	def check_data(self):
 		Protocol.client.request(DeviceCommand.QUERY_COMMAND, ujson.dumps(self._collect_status()))
-		print(Protocol.client.text())
+		print(Protocol.client.text)
 
 		# try:
 		json = Protocol.client.json()
