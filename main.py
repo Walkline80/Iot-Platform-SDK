@@ -40,9 +40,10 @@ def button_pressed(status=None):
 if __name__ == "__main__":
 	try:
 		if WifiHandler.STATION_CONNECTED == connect_to_internet():
-			while True:
-				main()
+			# pass
+			main()
 
+			while True:
 				sleep(1)
 	except KeyboardInterrupt:
 		print("\nPRESS CTRL+D TO RESET DEVICE")

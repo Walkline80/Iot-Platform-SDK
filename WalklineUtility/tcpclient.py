@@ -16,13 +16,17 @@ class TCPClient(object):
 		header = {'Content-Type': 'application/json'}
 		# header = {"Content-Type": "application/x-www-form-urlencoded"}
 
-		self._response = urequests.post(url, headers=header, data=data)
-		self._status_code = self._response.status_code
-		self._reason = str(self._response.reason, "utf-8")
-		self._text = self._response.text
-		self._json = self._response.json()
-
-		self._response.close()
+		try:
+			self._response = urequests.post(url, headers=header, data=data)
+			self._status_code = self._response.status_code
+			self._reason = str(self._response.reason, "utf-8")
+			self._text = self._response.text
+			self._json = self._response.json()
+		except OSError as e:
+			with open(r"error.log", "a") as log:
+				log.write(e)
+		finally:
+			self._response.close()
 
 	@property
 	def status_code(self):

@@ -1,6 +1,6 @@
 import _thread
 from micropython import const
-from machine import Pin
+from machine import Pin, WDT
 from utime import ticks_ms, sleep_ms, sleep
 from WalklineUtility.tcpclient import *
 from Walkline import WalklineConfig
@@ -23,6 +23,9 @@ Protocol = Protocol()
 
 
 class WalklineMPY(object):
+	def __init__(self):
+		self._wdt = None
+
 	@staticmethod
 	def setup(uuid, device_id, device_key):
 		Protocol.uuid = uuid
@@ -35,12 +38,18 @@ class WalklineMPY(object):
 			Protocol.is_thread_running = True
 
 	def _thread_run(self):
+		self._wdt = WDT(timeout=10000)
+		self._wdt.feed()
+
 		while True:
 			self.check_data()
 
 			sleep(2)
 
 	def check_data(self):
+		self._wdt.feed()
+		self._wdt.feed()
+
 		Protocol.client.request(DeviceCommand.QUERY_COMMAND, ujson.dumps(self._collect_status()))
 		print(Protocol.client.text)
 
