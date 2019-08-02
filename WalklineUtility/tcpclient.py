@@ -1,5 +1,5 @@
 from Walkline.WalklineConfig import *
-import urequests
+from module import urequests
 import ujson
 
 
@@ -23,8 +23,11 @@ class TCPClient(object):
 			self._text = self._response.text
 			self._json = self._response.json()
 		except OSError as e:
+			# [Errno 110] ETIMEDOUT
+			print(e)
+
 			with open(r"error.log", "a") as log:
-				log.write(e)
+				log.write(str(e))
 		finally:
 			self._response.close()
 

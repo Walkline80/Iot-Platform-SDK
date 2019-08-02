@@ -38,8 +38,8 @@ class WalklineMPY(object):
 			Protocol.is_thread_running = True
 
 	def _thread_run(self):
-		self._wdt = WDT(timeout=10000)
-		self._wdt.feed()
+		# self._wdt = WDT(timeout=10000)
+		# self._wdt.feed()
 
 		while True:
 			self.check_data()
@@ -47,8 +47,8 @@ class WalklineMPY(object):
 			sleep(2)
 
 	def check_data(self):
-		self._wdt.feed()
-		self._wdt.feed()
+		# self._wdt.feed()
+		# self._wdt.feed()
 
 		Protocol.client.request(DeviceCommand.QUERY_COMMAND, ujson.dumps(self._collect_status()))
 		print(Protocol.client.text)
