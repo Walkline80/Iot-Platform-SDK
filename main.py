@@ -5,6 +5,7 @@ from config import *
 from machine import Pin
 
 led = Pin(2, Pin.OUT, value=0)
+relay = Pin(12, Pin.OUT, value=1)
 
 
 def main():
@@ -26,13 +27,17 @@ def connect_to_internet():
 def button_pressed(status=None):
 	if status is None:
 		led.value(not led.value())
+		relay.value(not led.value())
 	else:
 		if status == 1:
 			led.on()
+			relay.off()
 		elif status == 0:
 			led.off()
+			relay.on()
 		elif status == 2:
 			led.value(not led.value())
+			relay.value(not led.value())
 		else:
 			raise ValueError("Wrong status command received")
 
