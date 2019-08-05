@@ -22,12 +22,12 @@ class TCPClient(object):
 			self._reason = str(self._response.reason, "utf-8")
 			self._text = self._response.text
 			self._json = self._response.json()
-		except OSError as e:
+		except Exception as e:
 			# [Errno 110] ETIMEDOUT
 			print(e)
 
 			with open(r"error.log", "a") as log:
-				log.write(str(e))
+				log.write(str(e) + "\r\n")
 		finally:
 			self._response.close()
 
