@@ -5,7 +5,7 @@ from config import *
 from machine import Pin
 
 led = Pin(2, Pin.OUT, value=0)
-relay = Pin(12, Pin.OUT, value=1)
+relay = Pin(14, Pin.OUT, value=1)
 
 
 def main():

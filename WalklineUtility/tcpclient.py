@@ -1,6 +1,7 @@
 from Walkline.WalklineConfig import *
-from module import urequests
+# from module import urequests
 import ujson
+import urequests
 
 
 class TCPClient(object):

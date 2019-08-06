@@ -44,7 +44,7 @@ class WalklineMPY(object):
 		while True:
 			self.check_data()
 
-			sleep(2)
+			sleep(0.5)
 
 	def check_data(self):
 		# self._wdt.feed()
